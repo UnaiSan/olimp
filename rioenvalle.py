@@ -18,7 +18,6 @@ def get_extreme(matrix: List[List[int]], max_: bool=True) -> Tuple[int, int, int
 
     return value, ivalue, jvalue
 
-
 def get_max(matrix: List[List[int]]) -> Tuple[int, int, int]:
     maxis = []
     jmaxis = []
@@ -47,9 +46,11 @@ def get_min(matrix: List[List[int]]) -> Tuple[int, int, int]:
 
     return bot, ibot, jbot
 
-
+def get_shape(matrix: List[List[int]]) -> Tuple[int, int]:
+    return len(matrix), len(matrix[0])
 
 fichero_entrada = "rioenvalle.in"
+lista_salida = []
 
 t = []
 
@@ -62,27 +63,23 @@ with open(fichero_entrada, "rt") as f:
         for j, v in enumerate(temp):
             t[i][j] = int(v)
 
-# maxis = []
-# imaxis = []
-# for fila in t:
-#     maxi = max(fila)
-#     maxis.append(maxi)
-#     imaxis.append(fila.index(maxi))
-
-# top = max(maxis)
-# itop = maxis.index(top)
-# jtop = imaxis[itop]
-
 top, itop, jtop = get_max(t)
+lista_salida.append(top)
 
-t_peque = [f[jtop-1:jtop+2] for f in t[itop-1:itop+2]]
-bot, ibot, jbot = get_min(t_peque)
+if (not itop in [0, nf-1]) or (not jtop in [0, nc-1]):
+    t_peque = [f[jtop-1:jtop+2] for f in t[itop-1:itop+2]]
+    bot, ibot, jbot = get_min(t_peque)
+    itop += ibot - 1
+    jtop += jbot - 1
+    lista_salida.append(bot)
 
-while 
+    while (not itop in [0, nf-1]) and (not jtop in [0, nc-1]):
+        t_peque = [f[jtop-1:jtop+2] for f in t[itop-1:itop+2]]
+        bot, ibot, jbot = get_min(t_peque)
+        itop += ibot - 1
+        jtop += jbot - 1
 
-print(f"{top = }, at i, j = {itop}, {jtop}")
-print(f"check: {t[itop][jtop] = }")
+        lista_salida.append(bot)        
 
-print(f"{t_peque = }")
-
-print(f"{bot = }, at i, j = {ibot}, {jbot}")
+for s in lista_salida:
+    print(s)
