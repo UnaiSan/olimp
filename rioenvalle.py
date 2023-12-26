@@ -49,7 +49,7 @@ def get_min(matrix: List[List[int]]) -> Tuple[int, int, int]:
 def get_shape(matrix: List[List[int]]) -> Tuple[int, int]:
     return len(matrix), len(matrix[0])
 
-fichero_entrada = "rioenvalle_2.in"
+fichero_entrada = "rioenvalle_3.in"
 lista_salida = []
 
 t = []
@@ -66,24 +66,25 @@ with open(fichero_entrada, "rt") as f:
 top, itop, jtop = get_max(t)
 lista_salida.append(top)
 
-if (not itop in [0, nf-1]) or (not jtop in [0, nc-1]):
+if not ((itop in [0, nf-1]) or ( jtop in [0, nc-1])):
     t_peque = [f[jtop-1:jtop+2] for f in t[itop-1:itop+2]]
-    t_peque[1][1] += 1000
     bot, ibot, jbot = get_min(t_peque)
     itop += ibot - 1
     jtop += jbot - 1
     lista_salida.append(bot)
-    t[itop][jtop] += 1000
 
-    while (not itop in [0, nf-1]) and (not jtop in [0, nc-1]):
+    cond_borde = (itop in [0, nf-1]) or (jtop in [0, nc-1])
+    cond_pozo_local = (ibot == 1) and (jbot == 1)
+    while  not cond_borde and not cond_pozo_local:
         t_peque = [f[jtop-1:jtop+2] for f in t[itop-1:itop+2]]
-        t_peque[1][1] += 1000
         bot, ibot, jbot = get_min(t_peque)
         itop += ibot - 1
         jtop += jbot - 1
 
-        lista_salida.append(bot)        
-        t[itop][jtop] += 1000
-
+        cond_borde = (itop in [0, nf-1]) or (jtop in [0, nc-1])
+        cond_pozo_local = (ibot == 1) and (jbot == 1)
+        if not cond_pozo_local:
+            lista_salida.append(bot)        
+        
 for s in lista_salida:
     print(s)
